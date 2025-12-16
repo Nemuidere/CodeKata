@@ -12,10 +12,7 @@ def pig_it(text):
     result = ''
     for word in text.split():
         if not word.isalpha():
-            result += word
-            result += ' '
+            result += word + ' '
         else:
-            result += word[1:]
-            result += word[0]
-            result += 'ay '
+            result += word[1:] + word[0] + 'ay '
     return result[:-1]
