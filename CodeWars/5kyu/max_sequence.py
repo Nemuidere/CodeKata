@@ -13,4 +13,10 @@ Empty list is considered to have zero greatest sum. Note that the empty list or 
 """
 
 def max_sequence(arr):
-    pass
+    result = 0
+    temp = 0
+    for x in arr:
+        temp += x
+        if temp > result: result = temp
+        if temp < 0: temp = 0
+    return result
