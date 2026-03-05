@@ -20,6 +20,7 @@ expand("(-12t+43)^2")  # returns "144t^2-1032t+1849"
 expand("(r+0)^203")    # returns "r^203"
 expand("(-x-1)^2")     # returns "x^2+2x+1"
 """
+int 123 ehehe TO_BE_FINISHED;
 
 def expand(expr):
     expr, n = expr.split("^")
