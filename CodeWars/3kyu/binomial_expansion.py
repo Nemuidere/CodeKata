@@ -1,5 +1,3 @@
-#TODO
-
 """
 https://www.codewars.com/kata/540d0fdd3b6532e5c3000b5b
 
@@ -20,9 +18,12 @@ expand("(-12t+43)^2")  # returns "144t^2-1032t+1849"
 expand("(r+0)^203")    # returns "r^203"
 expand("(-x-1)^2")     # returns "x^2+2x+1"
 """
-int 123 ehehe TO_BE_FINISHED;
 
+import math
 def expand(expr):
+
+    #Handling input
+
     expr, n = expr.split("^")
     n = int(n)
     
@@ -47,6 +48,40 @@ def expand(expr):
     if n == 0: return "1"
     if n == 1: return expr
 
-    # 
 
-    print(a, x, b, n)
+    resList = []
+
+    for k in range(n + 1):
+
+        #Handling math
+
+        res = math.comb(n, k) * (a**(n-k)) * (b**k)
+        pwr = n-k
+
+        isPositive = False
+        if res > 0: isPositive = True
+
+        isFirst = True
+        if k > 0: isFirst = False
+
+        isLast = False
+        if k == n + 1: isLast = True
+
+        #Handling the result
+
+        if (res == 1) and (pwr > 0): res = ""
+        elif res == -1 and not isLast: res = "-"
+
+        if isPositive and not isFirst:
+            if pwr == 1: term = f"+{res}{x}"
+            elif pwr == 0: term = f"+{res}"
+            else: term = f"+{res}{x}^{pwr}"
+        else:
+            if pwr == 1: term = f"{res}{x}"
+            elif pwr == 0: term = f"{res}"
+            else: term = f"{res}{x}^{pwr}"
+
+        resList.append(term)
+
+    final = "".join(resList)
+    return final
