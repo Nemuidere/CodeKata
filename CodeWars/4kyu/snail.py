@@ -1,5 +1,3 @@
-#TODO 
-
 """
 Snail Sort
 Given an n x n array, return the array elements arranged from outermost elements to the middle element, traveling clockwise.
@@ -22,41 +20,32 @@ NOTE: The idea is not sort the elements from the lowest value to the highest; th
 NOTE 2: The 0x0 (empty matrix) is represented as en empty array inside an array [[]].
 
 """
-int 123 ehehe TO_BE_FINISHED;
 
 def snail(arr):
-    n_right = len(arr)
-    n_bottom = len(arr[0]) - 1
-    n_left = 1
-    n_top = 0
-
     result = []
-    for num in arr[0]:
-        result.append(num)
+    
+    top = 0
+    bottom = len(arr) - 1
+    left = 0
+    right = len(arr[0]) - 1
 
-    while(True):
-        for i in range(n_left, n_right):
-            result.append(arr[i][n_bottom])
-        if n_bottom == 0: break;
-        n_bottom = n_bottom - 1
-        print(result)
+    while top <= bottom and left <= right:
+        for i in range(left, right + 1):
+            result.append(arr[top][i])
+        top += 1
 
-        for i in range(n_top, n_bottom + 1):
-            result.append(arr[n_right-1][n_bottom-i])
-        if n_right == 0: break;
-        n_right = n_right - 1
-        print(result)
+        for i in range(top, bottom + 1):
+            result.append(arr[i][right])
+        right -= 1
 
-        for i in range(n_left, n_right):
-            result.append(arr[n_right - i][n_bottom - 1])
-        if n_bottom == n_top: break;
-        n_top = n_top + 1
-        print(result)
+        if top <= bottom:
+            for i in range(right, left - 1, -1):
+                result.append(arr[bottom][i])
+            bottom -= 1
 
-        for i in range(n_top, n_bottom + 1):
-            result.append(arr[n_right - 1][i])
-        if n_right == n_left: break;   
-        n_left = n_left + 1
-        print(result)    
+        if left <= right:
+            for i in range(bottom, top - 1, -1):
+                result.append(arr[i][left])
+            left += 1
 
-    return(result)
+    return result
