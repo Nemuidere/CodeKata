@@ -1,5 +1,3 @@
-#TODO 
-
 """
 You might already be familiar with many smartphones that allow you to use a geometric pattern as a security measure. To unlock the device, you need to connect a sequence of dots/points in a grid by swiping your finger without lifting it as you trace the pattern through the screen.
 
@@ -26,11 +24,13 @@ Passing over a point between them that has already been 'used': like (G -> C) pa
 The sample tests have some examples of the number of combinations for some cases to help you check your code.
 """
 
-int 123 ehehe TO_BE_FINISHED;
-
 import string
 
 def count_patterns_from(firstPoint, length):
+
+    if length <= 0: return 0
+    if length > 9: return 0
+    if length == 1: return 1
 
     class Dot:
         def __init__(self, name):
@@ -44,10 +44,30 @@ def count_patterns_from(firstPoint, length):
         def check_block(self, value, position):
             return any(pair[position] == value for pair in self.blockedBy)
     
-    def calculate_connections(currentPoint, length, counter):
-        pass #Going trough every possible dot and calling calculate_connections from this dot with one less lenght, if we reach the final length we instead finish that branch and add one to the counter
+    def calculate_connections(currentDot, length):
+        if length == 1:
+            return 1
 
-        #Here we must also check if we can access each dot (if it's not blocked by another dot, however if the blocking (left in the pair) dot is already used, we can access the right dot in pair). Dots not being in the right part of any blockedBy of the currentPoint can be always accessed as long as they're not isUsed
+        count = 0
+        currentDot.isUsed = True
+
+        for name, dot in dots.items():
+            can_move = False
+            if not dot.isUsed:
+                can_move = True
+
+                for left, right in currentDot.blockedBy:
+                    if right == name:
+                        if not dots[left].isUsed:
+                            can_move = False
+                            break
+            
+            if can_move:
+                count += calculate_connections(dot, length-1)
+
+
+        currentDot.isUsed = False
+        return count
 
     dots = {letter: Dot(letter) for letter in string.ascii_uppercase[:9]}
     
@@ -68,8 +88,4 @@ def count_patterns_from(firstPoint, length):
     dots['I'].add_block('E', 'A')
     dots['I'].add_block('F', 'C')
 
-    counter = 0
-
-    #Initiall call of the calculate_connections using firstPoint and length
-
-    return counter
+    return calculate_connections(dots[firstPoint], length)
