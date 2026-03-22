@@ -1,4 +1,3 @@
-#TODO
 
 """
 Create a function that takes a positive integer and returns the next bigger number that can be formed by rearranging its digits. For example:
@@ -12,9 +11,9 @@ If the digits can't be rearranged to form a bigger number, return -1 (or nil in 
 111 ==> -1
 531 ==> -1
 """
-int 123 ehehe TO_BE_FINISHED;
 
 def next_bigger(n):
+    input = n
 
     if n < 10: return -1
 
@@ -30,14 +29,20 @@ def next_bigger(n):
         
         if current > next:
             split_point = i + 2 
-#Error is here, logic should be: 
-    #Find the split point
-    #Put the NEXT biggest number as the split point
-    #Sort the rest of the numbers, ascending
-    #TODO
             part_b = digits[split_point:]
             part_a = digits[:split_point]
-            part_a.sort()
+
+            smallestBigger = 10 #I initially put this as '9' and couldn't figure out why my code didn't work
+            smallestBiggerId = 0
+            for d in range(len(part_a)):
+                if (part_a[d] > part_a[-1]) and (part_a[d] < smallestBigger):
+                    smallestBigger = part_a[d]
+                    smallestBiggerId = d
+            
+            part_a[-1], part_a[smallestBiggerId] = part_a[smallestBiggerId], part_a[-1]
+            part_a = part_a[:-1]
+            part_a.sort(reverse=True)
+            part_a.append(smallestBigger)
             digits = part_a + part_b
             break
 
@@ -46,4 +51,7 @@ def next_bigger(n):
     for d in digits:
         result = (result* 10) + d
 
-    return result
+    if result == input:
+        return -1
+    else:
+        return result
