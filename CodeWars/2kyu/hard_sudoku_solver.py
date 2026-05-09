@@ -21,10 +21,31 @@ Or it should raise an error in cases of: invalid grid (not 9x9, cell with values
 from itertools import product as prd
 
 def sudoku_solver(horizontal):
-    stack = []
     all_nums = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+    
+    if len(horizontal) != 9:
+        raise ValueError("Invalid sudoku puzzle")
+
+    for row in horizontal:
+        if len(row) != 9:
+            raise ValueError("Invalid sudoku puzzle")
+
+    for row in horizontal:
+        seen = set()
+        for val in row:
+            if val != 0:
+                if val not in all_nums:
+                    raise ValueError("Invalid sudoku puzzle")
+                if val in seen:
+                    raise ValueError("Invalid sudoku puzzle")
+                seen.add(val)
+
+    solution = None
+    stack = []
     solved_count = 0
+    solvable = True
     while True:
+        if solved_count == 2: raise ValueError("Invalid sudoku puzzle")
         best_cell = None
         min_candidates = 10
         for x, y in prd(range(9), range(9)):
@@ -49,13 +70,29 @@ def sudoku_solver(horizontal):
                 if num_candidates == 1:
                     break
 
-        if best_cell is None:
-            solved_count += 1
-            solution = [row[:] for row in horizontal]
+        if (best_cell is None) or (not best_cell[2]):
+            if best_cell is None:
+                solved_count += 1
+                solution = [row[:] for row in horizontal]
+
+            while stack:
+                x, y, candidates = stack[-1]
+                horizontal[x][y] = 0
+                if not candidates:
+                    stack.pop()
+                else:
+                    horizontal[x][y] = candidates.pop()
+                    break
+            if not stack:
+                solvable = False
             continue
+            
+        if not solvable:
+            break
+
+        x,y,nums = best_cell
+        horizontal[x][y] = best_cell[2].pop()
+        stack.append(best_cell)
         
-        # 0 candidates handling
-        
-        # x>1 candidates handling
-        
-    return solution
+    if solution and (solved_count==1): return solution
+    else: raise ValueError("Invalid sudoku puzzle")
