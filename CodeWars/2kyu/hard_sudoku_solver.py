@@ -1,6 +1,3 @@
-
-#TODO
-
 """
 There are several difficulty of sudoku games, we can estimate the difficulty of a sudoku game based on how many cells are given of the 81 cells of the game.
 
